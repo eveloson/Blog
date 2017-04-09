@@ -99,4 +99,11 @@ public class IndexController {
 		return modelAndView;
 
 	}
+	/*
+	 * 后台地址重定向
+	 */
+	@RequestMapping("/admin")
+	public String admin(){
+		return "redirect:/admin/main.jsp";
+	}
 }

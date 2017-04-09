@@ -35,9 +35,11 @@ public class InitBloggerData implements ServletContextListener, ApplicationConte
 		//获取博主信息
 		Blogger blogger = bloggerService.getBloggerData();
 		//由于密码也获取到了，比较敏感，我们也不需要这个，所以把密码清空掉
-		blogger.setPassword(null);
-		//将博主信息存入application域中
-		application.setAttribute("blogger", blogger);
+		if (null != blogger) {
+			blogger.setPassword(null);
+			//将博主信息存入application域中
+			application.setAttribute("blogger", blogger);
+		}
 		
 		//同上，获取友情链接信息
 		LinkService linkService = (LinkService) applicationContext.getBean("linkService");

@@ -17,12 +17,32 @@
 
 	<!-- 自动扫描包中的bean -->
 	<context:component-scan base-package="ssm.blog.*" />
-
+	<!-- 加载配置文件 -->
+	<bean
+		class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+		<property name="locations">
+			<list>
+				<value>classpath*:jdbc.properties</value>
+			</list>
+		</property>
+	</bean>
 	<!-- 配置数据源，使用阿里巴巴连接池Druid -->
 	<bean id="dataSource" class="com.alibaba.druid.pool.DruidDataSource">
-		<property name="url" value="jdbc:mysql://localhost:3306/db_blog"/>
-		<property name="username" value="root"/>
-		<property name="password" value="root"/>
+		<property name="url" value="${jdbc.url}" />
+		<property name="username" value="${jdbc.user}" />
+		<property name="password" value="${jdbc.password}" />
+		<property name="filters" value="stat" />
+		<property name="maxActive" value="20" />
+		<property name="initialSize" value="1" />
+		<property name="maxWait" value="60000" />
+		<property name="minIdle" value="1" />
+		<property name="timeBetweenEvictionRunsMillis" value="60000" />
+		<property name="minEvictableIdleTimeMillis" value="300000" />
+		<property name="testWhileIdle" value="true" />
+		<property name="testOnBorrow" value="false" />
+		<property name="testOnReturn" value="false" />
+		<property name="poolPreparedStatements" value="true" />
+		<property name="maxOpenPreparedStatements" value="20" />
 	</bean>
 
 	<!-- 配置mybatis的sqlSessionFactory -->
@@ -61,7 +81,7 @@
 		<!-- 身份认证失败，则跳转到登录页面的配置 -->
 		<property name="loginUrl" value="/login.jsp" />
 		<!-- 权限认证失败，则跳转到指定页面，因为个人博客就一个人登陆，就不需要权限了 -->
-		<!-- <property name="unauthorizedUrl" value="/unauthorized.jsp" />  -->
+		<!-- <property name="unauthorizedUrl" value="/unauthorized.jsp" /> -->
 		<!-- Shiro连接约束配置,即过滤链的定义 -->
 		<property name="filterChainDefinitions">
 			<value>
